@@ -1,7 +1,5 @@
 <template>
-  <div class="container-xl h-[70vh] w-full">
-    <div class="flex justify-center items-center">THIS IS HOMEPAGE</div>
-  </div>
+  <div class="container-xl h-[90vh] bg-white w-full"></div>
 </template>
 
 <script>

@@ -46,13 +46,18 @@
               tabindex="0"
               class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
             >
-              <li><router-link :to="'/login'">Login</router-link></li>
-              <li><router-link :to="'/register'">register</router-link></li>
-              <li><router-link :to="'/'">Logout</router-link></li>
+              <li v-if="isLogin === false">
+                <router-link :to="'/login'">Login-register</router-link>
+              </li>
+              <li v-if="isLogin === true">
+                <router-link :to="'/'" @click.prevent="logout"
+                  >Logout</router-link
+                >
+              </li>
             </ul>
           </div>
         </div>
-        <router-view></router-view>
+        <router-view />
       </div>
       <div class="drawer-side">
         <label for="my-drawer" class="drawer-overlay"></label>
@@ -62,20 +67,29 @@
               <h1>WELCOME</h1>
             </div>
             <div class="flex justify-center">
-              <h1>JACK</h1>
+              <h1>{{ email }}</h1>
             </div>
-            <div class="flex uppercase justify-center">
+            <div v-if="role === 'seller'" class="flex uppercase justify-center">
               <h1 class="col">You can sell your wares</h1>
             </div>
-            <div class="flex uppercase justify-center">
+            <div
+              v-if="role === 'customer'"
+              class="flex uppercase justify-center"
+            >
               <h1 class="col">Spend your money here</h1>
             </div>
           </div>
           <!-- Sidebar content here -->
           <li><router-link :to="'/'">HomePage</router-link></li>
-          <li><router-link :to="'/sell'">Sell Wares</router-link></li>
-          <li><router-link :to="'/myWares'">My Wares</router-link></li>
-          <li><router-link :to="'/myCart'">My Cart</router-link></li>
+          <li v-if="role === 'seller'">
+            <router-link :to="'/sell'">Sell Wares</router-link>
+          </li>
+          <li v-if="role === 'seller'">
+            <router-link :to="'/myWares'">My Wares</router-link>
+          </li>
+          <li v-if="role === 'customer'">
+            <router-link :to="'/myCart'">My Cart</router-link>
+          </li>
         </ul>
       </div>
     </div>
@@ -83,8 +97,34 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapWritableState } from "pinia";
+import { useState } from "../stores/state";
 export default {
-  name: "navBar",
+  name: "mainContent",
+  computed: {
+    ...mapState(useState, ["email", "role"]),
+    ...mapWritableState(useState, ["isPending", "isLogin"]),
+  },
+  methods: {
+    ...mapActions(useState, ["doLogout"]),
+    async logout() {
+      try {
+        this.isPending = true;
+        await this.doLogout;
+        localStorage.clear();
+        this.isLogin = false;
+        this.isPending = false;
+        //swall berhasil disini
+      } catch (err) {
+        console.log(err.response.data.message);
+      }
+    },
+  },
+  created() {
+    if (localStorage.access_token) {
+      // this.checkUser();
+    }
+  },
 };
 </script>
 
