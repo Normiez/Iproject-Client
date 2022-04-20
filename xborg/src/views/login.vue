@@ -11,7 +11,9 @@
             />
           </div>
           <div class="my-5">
-            <h1 class="uppercase">To use our app, please login first</h1>
+            <h1 class="uppercase text-white">
+              To use our app, please login first
+            </h1>
           </div>
           <div class="my-5">
             <loginRegister @submit="doLogin" :state="'Login'"></loginRegister>
