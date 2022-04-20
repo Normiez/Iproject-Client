@@ -31,8 +31,5 @@ export const useState = defineStore({
         url: "/logout",
       });
     },
-    fetchAllData(){
-      console.log("Masuk");
-    }
   },
 });

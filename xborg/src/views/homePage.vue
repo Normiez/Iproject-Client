@@ -3,6 +3,7 @@
     <div class="grid grid-cols-12 text-white mt-10">
       <div class="col-span-3">
         <input
+          v-model="searchData"
           type="text"
           class="input input-bordered w-full max-w-xs ml-5"
           placeholder="Search Title"
@@ -22,7 +23,7 @@
 
 <script>
 import { mapActions } from "pinia";
-import { useState } from "../stores/state";
+import { usePostState } from "../stores/postState";
 import btn from "../components/btn.vue";
 import reusableCard from "../components/reusableCard.vue";
 export default {
@@ -31,14 +32,16 @@ export default {
     btn,
     reusableCard,
   },
-  methods: {
-    ...mapActions(useState, ["fetchAllData"]),
-    submit() {
-      console.log("masuk methods ni bang");
-    },
+  data() {
+    return {
+      searchData: "",
+    };
   },
-  created() {
-    this.fetchAllData();
+  methods: {
+    ...mapActions(usePostState, ["fetchAllData"]),
+    submit() {
+      this.fetchAllData(this.searchData);
+    },
   },
 };
 </script>

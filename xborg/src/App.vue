@@ -15,8 +15,9 @@
 </template>
 
 <script>
-import { mapState } from "pinia";
+import { mapState, mapActions } from "pinia";
 import { useState } from "./stores/state";
+import { usePostState } from "./stores/postState";
 import mainContent from "./views/mainContent.vue";
 export default {
   name: "App",
@@ -25,6 +26,12 @@ export default {
   },
   computed: {
     ...mapState(useState, ["isPending"]),
+  },
+  methods: {
+    ...mapActions(usePostState, ["fetchAllData"]),
+  },
+  created() {
+    this.fetchAllData();
   },
 };
 </script>

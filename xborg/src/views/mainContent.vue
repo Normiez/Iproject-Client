@@ -122,7 +122,7 @@ export default {
   },
   created() {
     if (localStorage.access_token) {
-      // this.checkUser();
+      this.isLogin = true;
     }
   },
 };
