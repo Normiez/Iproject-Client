@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const url = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://x-borg-project.herokuapp.com",
 });
 
 export default url;
