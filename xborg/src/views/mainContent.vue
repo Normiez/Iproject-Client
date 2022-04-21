@@ -94,7 +94,9 @@
             >
           </li>
           <li v-if="role === 'customer'">
-            <router-link :to="'/myCart'">My Cart</router-link>
+            <router-link @click="cartFetch" :to="'/myCart'"
+              >My Cart</router-link
+            >
           </li>
         </ul>
       </div>
@@ -119,7 +121,7 @@ export default {
   },
   methods: {
     ...mapActions(useState, ["doLogout"]),
-    ...mapActions(usePostState, ["fetchAllData", "fetchWares"]),
+    ...mapActions(usePostState, ["fetchAllData", "fetchWares", "fetchCart"]),
     async logout() {
       try {
         this.isPending = true;
@@ -131,6 +133,9 @@ export default {
       } catch (err) {
         console.log(err.response.data.message);
       }
+    },
+    cartFetch() {
+      this.fetchCart();
     },
   },
   created() {

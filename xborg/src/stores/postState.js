@@ -8,6 +8,7 @@ export const usePostState = defineStore({
     mainData: "",
     page: 1,
     search: "",
+    cartData: "",
   }),
   getters: {},
   actions: {
@@ -62,16 +63,27 @@ export const usePostState = defineStore({
         console.log(err);
       }
     },
-    async newCart(id) {
-      try {
-          
-        //   return axios({
-        //     method: "post",
-        //     url: "/customer/" + id,
-        //   });
-      } catch (err) {
-        console.log(err);
-      }
+    newCart(id) {
+      return axios({
+        method: "post",
+        url: "/customer/" + id,
+        headers: {
+          access_token: localStorage.access_token,
+        },
+      });
+    },
+    async fetchCart() {
+      const state = useState();
+      state.isPending = true;
+      const { data } = await axios({
+        method: "get",
+        url: "/customer/",
+        headers: {
+          access_token: localStorage.access_token,
+        },
+      });
+      this.cartData = data;
+      state.isPending = false;
     },
   },
 });

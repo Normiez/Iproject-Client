@@ -28,8 +28,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "pinia";
+import { mapState, mapActions, mapWritableState } from "pinia";
 import { usePostState } from "../stores/postState";
+import { useState } from "../stores/state";
 import btn from "../components/btn.vue";
 export default {
   name: "reusableCard",
@@ -38,17 +39,25 @@ export default {
       role: localStorage.role,
     };
   },
-  props: ["state"],
   computed: {
     ...mapState(usePostState, ["mainData"]),
+    ...mapWritableState(useState, ["isPending"]),
   },
   components: {
     btn,
   },
   methods: {
     ...mapActions(usePostState, ["newCart"]),
-    fetchId(id) {
-      this.newCart(id)
+    async fetchId(id) {
+      try {
+        this.isPending = true;
+        await this.newCart(id);
+        this.isPending = false;
+        //swal berhasil
+      } catch (err) {
+        console.log(err);
+        console.log(err.response.data.message);
+      }
     },
   },
 };

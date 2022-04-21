@@ -1,7 +1,7 @@
 <template>
   <div class="container-xl h-[90vh] w-full">
     <div class="flex justify-center items-center">
-      <reusableCard :state="'wares'"></reusableCard>
+      <reusableCard></reusableCard>
     </div>
   </div>
 </template>

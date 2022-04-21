@@ -82,7 +82,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(usePostState, ["createPost"]),
+    ...mapActions(usePostState, ["createPost", "fetchAllData"]),
     uploadData(event) {
       this.newData.imgData = event.target.files[0];
     },
@@ -96,11 +96,11 @@ export default {
             formData.append("description", this.newData.description);
             formData.append("stock", this.newData.stock);
             formData.append("price", this.newData.price);
-            await this.createPost(formData, config);
+            await this.createPost(formData);
             this.$router.push("/");
+            this.fetchAllData();
             //swal berhasil
           } catch (err) {
-            // console.log(err.response.data.message);
             console.log(err);
           }
         } else {
@@ -110,7 +110,6 @@ export default {
             this.$router.push("/");
             //swal berhasil
           } catch (err) {
-            // console.log(err.response.data.message);
             console.log(err);
           }
         }
