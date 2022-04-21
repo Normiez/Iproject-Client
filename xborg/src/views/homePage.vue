@@ -15,6 +15,7 @@
         ></btn>
       </div>
       <div class="col-span-9">
+        <pagination></pagination>
         <reusableCard></reusableCard>
       </div>
     </div>
@@ -24,6 +25,7 @@
 <script>
 import { mapActions } from "pinia";
 import { usePostState } from "../stores/postState";
+import pagination from "../components/pagination.vue";
 import btn from "../components/btn.vue";
 import reusableCard from "../components/reusableCard.vue";
 export default {
@@ -31,6 +33,7 @@ export default {
   components: {
     btn,
     reusableCard,
+    pagination,
   },
   data() {
     return {

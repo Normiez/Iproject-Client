@@ -7,33 +7,30 @@ export const usePostState = defineStore({
   state: () => ({
     mainData: "",
     page: 1,
+    search: "",
   }),
   getters: {},
   actions: {
     async fetchAllData(searchData) {
-      this.search = searchData;
       const state = useState();
       state.isPending = true;
       let options;
-      if (this.search) {
+      if (searchData) {
+        this.search = searchData;
         options = {
-          method: "GET",
-          url: "/post/",
-          params: {
-            search: this.search,
-            page: this.page,
-          },
+          search: this.search,
+          page: this.page,
         };
       } else {
         options = {
-          method: "GET",
-          url: "/post/",
-          params: {
-            page: this.page,
-          },
+          page: this.page,
         };
       }
-      const { data } = await axios(options);
+      const { data } = await axios({
+        method: "GET",
+        url: "/post/",
+        params: options,
+      });
       this.mainData = data;
       state.isPending = false;
     },
@@ -47,6 +44,34 @@ export const usePostState = defineStore({
         },
         data,
       });
+    },
+    async fetchWares() {
+      try {
+        const state = useState();
+        state.isPending = true;
+        const { data } = await axios({
+          method: "get",
+          url: "/post/wares",
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
+        this.mainData = data;
+        state.isPending = false;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async newCart(id) {
+      try {
+          
+        //   return axios({
+        //     method: "post",
+        //     url: "/customer/" + id,
+        //   });
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 });

@@ -80,12 +80,18 @@
             </div>
           </div>
           <!-- Sidebar content here -->
-          <li><router-link :to="'/'">HomePage</router-link></li>
+          <li>
+            <router-link @click="fetchAllData(null)" :to="'/'"
+              >HomePage</router-link
+            >
+          </li>
           <li v-if="role === 'seller'">
             <router-link :to="'/sell'">Sell Wares</router-link>
           </li>
           <li v-if="role === 'seller'">
-            <router-link :to="'/myWares'">My Wares</router-link>
+            <router-link @click="fetchWares" :to="'/myWares'"
+              >My Wares</router-link
+            >
           </li>
           <li v-if="role === 'customer'">
             <router-link :to="'/myCart'">My Cart</router-link>
@@ -97,16 +103,23 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapWritableState } from "pinia";
+import { mapActions, mapWritableState } from "pinia";
 import { useState } from "../stores/state";
+import { usePostState } from "../stores/postState";
 export default {
   name: "mainContent",
+  data() {
+    return {
+      email: localStorage.email || "",
+      role: localStorage.role || "",
+    };
+  },
   computed: {
-    ...mapState(useState, ["email", "role"]),
     ...mapWritableState(useState, ["isPending", "isLogin"]),
   },
   methods: {
     ...mapActions(useState, ["doLogout"]),
+    ...mapActions(usePostState, ["fetchAllData", "fetchWares"]),
     async logout() {
       try {
         this.isPending = true;
@@ -123,6 +136,8 @@ export default {
   created() {
     if (localStorage.access_token) {
       this.isLogin = true;
+    } else {
+      this.isLogin = false;
     }
   },
 };

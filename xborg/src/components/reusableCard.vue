@@ -13,7 +13,14 @@
         <p>{{ data.description }}</p>
         <p>Price: {{ data.price }}</p>
         <div class="card-actions">
-          <button class="btn btn-primary">Buy Now</button>
+          <btn
+            v-if="role !== 'seller' && role === 'customer'"
+            :name="'buy now!'"
+            :style="'btn btn-primary'"
+            :postId="data.id"
+            @submit="fetchId"
+          >
+          </btn>
         </div>
       </div>
     </div>
@@ -21,12 +28,28 @@
 </template>
 
 <script>
-import { mapState } from "pinia";
+import { mapState, mapActions } from "pinia";
 import { usePostState } from "../stores/postState";
+import btn from "../components/btn.vue";
 export default {
   name: "reusableCard",
+  data() {
+    return {
+      role: localStorage.role,
+    };
+  },
+  props: ["state"],
   computed: {
     ...mapState(usePostState, ["mainData"]),
+  },
+  components: {
+    btn,
+  },
+  methods: {
+    ...mapActions(usePostState, ["newCart"]),
+    fetchId(id) {
+      this.newCart(id)
+    },
   },
 };
 </script>

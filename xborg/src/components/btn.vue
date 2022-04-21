@@ -8,7 +8,11 @@ export default {
   props: ["name", "style", "postId"],
   methods: {
     action() {
-      this.$emit("submit");
+      if (this.name === "buy now!") {
+        this.$emit("submit", this.postId);
+      } else {
+        this.$emit("submit");
+      }
     },
   },
 };
